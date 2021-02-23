@@ -1,0 +1,40 @@
+
+You compile it with, gcc -O2 -Wall fpenc.c mraes.c mir.c -o fpenc -lssl -lcrypto
+
+Here is how to use it:
+
+fpenc  -e  -p pass -s salt    -r 1233345
+
+This will encode 1233345 using a AES key with the password pass and with salt salt the encoded result is: 
+6139803
+
+However it might be smarter to use a key, you can generate a key like this:
+fpenc  -e  -p pass -s salt -g 
+3bcf2cb1b21e0e2030d10d24982a0aaf388d7524b0bdcf87ac1935a0f601ba75
+
+You can now use this to encode with instead:
+fpenc  -e  -a 3bcf2cb1b21e0e2030d10d24982a0aaf388d7524b0bdcf87ac1935a0f601ba75    -r 1233345
+6139803
+
+You can also decode:
+
+fpenc  -d  -a 3bcf2cb1b21e0e2030d10d24982a0aaf388d7524b0bdcf87ac1935a0f601ba75    -r 6139803
+1233345
+
+or
+
+fpenc  -d  -p pass -s salt  -r 6139803
+1233345
+
+There is something called a tweak when so you can tweak your encryption somewhat see it as a second password, the program has its default tweak but you can also provide a tweak like this
+
+fpenc  -e  -p pass -s salt  -t 123456789  -r 1233345
+9522410
+
+And to decode
+fpenc  -d  -p pass -s salt  -t 123456789  -r 9522410
+1233345
+
+This also works with the generated AES key 
+
+Cheers Olof
